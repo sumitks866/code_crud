@@ -11,27 +11,27 @@ const projSchema = new mongoose.Schema({
     },
     mainStack:{
         type:String,
-        required:true
+        // required:true
     },
     tags:{
         type:[String],
-        required:true
+        // required:true
     },
     imgUrls:{
         type:[String],
-        required:true
+        // required:true
     },
     demoUrl:{
         type:String,
-        required:true
+        // required:true
     },
     repoUrl:{
         type:String,
-        required:true
+        // required:true
     },
     documentationUrl:{
         type:String,
-        required:true
+        // required:true
     }
 })
-module.exports = mongoose.model('Alien',projSchema);
+module.exports = mongoose.model('Project',projSchema);
