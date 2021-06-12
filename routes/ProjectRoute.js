@@ -1,30 +1,56 @@
 const express = require('express')
 const router = express.Router()
 const Project = require('../Schema/Project')
+const {UploadImage} = require('../utils/ImageUpload')
 
-router.post('/addproject',(req,res)=>{
-  const project = new Project ({
-    projectName: req.body.project_name,
-    developerName: req.body.developer_name,
-    mainStack: req.body.main_stack,
-    tags: req.body.tags,
-    imgUrls: req.body.img_urls,
-    demoUrl: req.body.demo_url,
-    repoUrl: req.body.repo_url,
-    documentationUrl: req.body.documentation_url
-  })
+router.post('/api/upload',async(req,res)=>{
+  try{
+    const result = UploadImage(req.body.data)
+    console.log(result)
+    res.json(result)
+  }catch (err) {
+    console.log(err)
+    res.json(err)
+  }
+})
 
-  project.save()
-    .then((result)=>{
-      res.status(201).json(result)
+router.post('/addproject',async (req,res)=>{
+
+  let imageUrls = []
+  console.log(req.body.images.length)
+
+  try{
+    
+    for(let i=0;i<req.body.images.length;i++) {
+      const fileUploadResp = await UploadImage(req.body.images[i])
+      imageUrls.push(fileUploadResp.secure_url)
+    }
+  
+    const project = new Project ({
+      projectName: req.body.project_name,
+      developerName: req.body.developer_name,
+      mainStack: req.body.main_stack,
+      tags: req.body.tags,
+      demoUrl: req.body.demo_url,
+      repoUrl: req.body.repo_url,
+      imgUrls:imageUrls,
+      documentationUrl: req.body.documentation_url
     })
-    .catch((err)=>{
-      res.json({error:err.message})
-    })
+
+    const result = await project.save()
+    res.status(201).json(result)
+  }catch (err) {
+    console.log(err.message)
+    if(err.http_code)
+      res.status(err.http_code)
+    else res.status(406)
+    res.json({error:err.message})
+  }
 })
 
 router.get('/', (req,res)=>{
   res.contentType('application/json')
+  console.log('sendig projects')
   Project.find()
     .then((result)=>{
       res.json(result)
