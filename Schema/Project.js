@@ -32,10 +32,6 @@ const projSchema = new mongoose.Schema({
     documentationUrl:{
         type:String,
         // required:true
-    },
-    projectDescription:{
-        type:String,
-        // required:true
     }
 })
 module.exports = mongoose.model('Project',projSchema);

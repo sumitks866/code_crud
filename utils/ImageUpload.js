@@ -1,19 +1,21 @@
-const { cloudinary } = require("./cloudinary");
+const {cloudinary} = require('./cloudinary')
 
 async function UploadImage(imageData) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve,reject)=>{  
+    
     try {
+      
       const uploadResponse = await cloudinary.uploader.upload(imageData, {
-        upload_preset: "project_ss",
+          upload_preset: 'project_ss',
       });
-      resolve(uploadResponse);
+      resolve(uploadResponse)
     } catch (err) {
       console.error(err);
-      reject(err);
+      reject(err)
     }
-  });
+  })
 }
 
 module.exports = {
-  UploadImage,
-};
+  UploadImage
+}
