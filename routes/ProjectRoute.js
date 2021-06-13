@@ -16,6 +16,7 @@ router.post("/api/upload", async (req, res) => {
 
 router.post("/addproject", async (req, res) => {
   let imageUrls = [];
+
   console.log(req.body.images.length);
 
   try {
@@ -33,6 +34,7 @@ router.post("/addproject", async (req, res) => {
       repoUrl: req.body.repo_url,
       imgUrls: imageUrls,
       documentationUrl: req.body.documentation_url,
+      projectDescription: req.body.project_description,
     });
 
     const result = await project.save();
@@ -80,6 +82,7 @@ router.patch("/update/:project_id", (req, res) => {
       demoUrl: req.body.demo_url,
       repoUrl: req.body.repo_url,
       documentationUrl: req.body.documentation_url,
+      projectDescription: req.body.project_description,
     },
     { safe: true, upsert: true }
   )
