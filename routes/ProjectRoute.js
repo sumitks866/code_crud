@@ -21,7 +21,7 @@ router.post('/addproject',async (req,res)=>{
 
   try{
     
-    for(let i=0;i<req.body.images.length;i++) {
+    for(let i=0;req.body.images && i<req.body.images.length;i++) {
       const fileUploadResp = await UploadImage(req.body.images[i])
       imageUrls.push(fileUploadResp.secure_url)
     }
