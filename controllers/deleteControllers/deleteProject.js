@@ -5,7 +5,7 @@ module.exports = async(req,res) => {
 
   try {
     let result = await Project.deleteOne({_id:projectId})
-    res.status(202)
+    res.status(202).send(result)
   } catch(err) {
     console.log(err)
     return res.status(406).send({ errorMsg: err.message })
